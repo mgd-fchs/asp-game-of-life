@@ -19,12 +19,18 @@ active(X,Y,X,Y) :- lives(X,Y).
 active(X,Y,XX,YY) :- near(X,Y,XX,YY), lives(XX,YY).
 
 % TODO: Add rules for death/birth of cells
-upper(X,Y) :- cell(X,Y), 4 <= #count{ XX,YY : active(X,Y,XX,YY), near(X,Y,XX,YY) }.
-lower(X,Y) :- value(X), value(Y), 3 <= #count{ XX,YY : active(X,Y,XX,YY) }.
+overpopulation(X,Y) :- cell(X,Y), 4 <= #count{ XX,YY : active(X,Y,XX,YY), near(X,Y,XX,YY) }.
+birth(X,Y) :- cell(X, Y), 3 == #count{ XX,YY : active(X,Y,XX,YY), near(X,Y,XX,YY) }.
+loneliness(X, Y) :- cell(X,Y), 2 > #count{ XX,YY : active(X,Y,XX,YY), near(X,Y,XX,YY) }.
+preservation(X, Y) :- cell(X, Y), 2 == #count{ XX,YY : active(X,Y,XX,YY), near(X,Y,XX,YY) }.
+preservation(X, Y) :- cell(X, Y), 3 == #count{ XX,YY : active(X,Y,XX,YY), near(X,Y,XX,YY) }.
 
-dead(X,Y) :- lives(X,Y), upper(X,Y).
-lives(X,Y) :- cell(X,Y), not lives(X,Y), lower(X,Y).
+dead(X,Y) :- cell(X, Y), lives(X,Y), overpopulation(X,Y).
+dead(X,Y) :- cell(X, Y), lives(X,Y), loneliness(X,Y).
+lives(X,Y) :- cell(X, Y), lives(X,Y), preservation(X,Y).
+lives(X,Y) :- cell(X,Y), not lives(X,Y), birth(X,Y).
 
+% TODO: Fix initial config
 neighbors(X,Y,XX,YY) :- near(X,Y,XX,YY), lives(X,Y).
 neighbors(X,Y,XX,YY) :- near(X,Y,XX,YY), cell(X,Y), not lives(XX,YY).
 initial(1,1) :- cell(1,1).

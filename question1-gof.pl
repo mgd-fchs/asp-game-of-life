@@ -12,6 +12,6 @@ lives(3,2).
 lives(3,3).
 lives(3,4).
 
-#show lives/2.
-% #show initial/2.
-% #show.
+%#show lives/2.
+#show initial/2.
+%#show.
