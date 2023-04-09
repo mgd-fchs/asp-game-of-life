@@ -13,5 +13,10 @@ lives(3,3).
 lives(3,4).
 
 %#show lives/2.
-#show initial/2.
+%#show initial/2.
 %#show.
+
+#show lives/2.
+%#show border_cell/2.
+%#show neighbors/4.
+%#show active/4.
