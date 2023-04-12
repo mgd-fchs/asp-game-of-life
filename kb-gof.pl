@@ -35,12 +35,12 @@ loneliness(X,Y,T) :- cell(X,Y), timestep(T), 2 > #count{ XX,YY : active(X,Y,XX,Y
 preservation(X,Y,T) :- cell(X, Y), timestep(T), 2 == #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T) }.
 preservation(X,Y,T) :- cell(X, Y), timestep(T), 3 == #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T) }.
 
-not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), overpopulation(X,Y,T).
+not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), overpopulation(X,Y,T), timestep(T).
 not lives(X,Y,T+1) :- border_cell(X,Y), timestep(T+1).
 not lives(X,Y,T) :- border_cell(X,Y), timestep(T).
-not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), loneliness(X,Y,T).
-lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), preservation(X,Y,T).
-lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), birth(X,Y,T).
+not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), loneliness(X,Y,T), timestep(T).
+lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), preservation(X,Y,T), timestep(T).
+lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), birth(X,Y,T), timestep(T).
 
 
 %neighbors(X,Y,XX,YY) :- near(X,Y,XX,YY), cell(X,Y), lives(X,Y,T), timestep(T).
