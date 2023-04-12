@@ -4,8 +4,8 @@
 % All other cells are dead
 
 % Define the grid size
-
-size(5).
+#const n = 5.
+size(n).
 
 % Define the alive cells
 % Center cell and cells to its right and left are alive
@@ -41,3 +41,5 @@ not lives(3,1,0).
 not lives(3,5,0).
 
 #show lives/3.
+%#show active/5.
+%#show border_cell/2.
