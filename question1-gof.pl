@@ -1,9 +1,6 @@
 #include "kb-gof.pl".
-% Initial configuration for a 5x5 Game of Life
-% Only the center cell and the cells to its right and left are alive
-% All other cells are dead
 
-% Define the grid size
+% Define the grid size and timestep
 #const n = 5.
 #const t = 1.
 
