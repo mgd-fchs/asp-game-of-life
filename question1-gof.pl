@@ -43,3 +43,8 @@ not lives(3,5,0).
 #show lives/3.
 %#show active/5.
 %#show border_cell/2.
+
+%#show overpopulation/3.
+%#show loneliness/3.
+%#show birth/3.
+%#show preservation/3.

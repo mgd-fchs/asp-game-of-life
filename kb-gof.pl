@@ -1,7 +1,7 @@
 % Timestep is incremented between 0 and 5
-timestep(0..5).
+timestep(0..3).
 timestep(0).
-timestep(T+1) :- timestep(T), T < 5.
+timestep(T+1) :- timestep(T), T < 3.
 
 % Define valid cells and coordinates on the grid
 value(0).
@@ -24,7 +24,6 @@ border_cell(X,Y) :- cell(X, Y), Y == n.
 
 { lives(X,Y,T) } :- cell(X,Y), timestep(T).
 
-active(X,Y,X,Y,T) :- near(X,Y,X,Y), lives(X,Y,T), timestep(T).
 active(X,Y,XX,YY,T) :- near(X,Y,XX,YY), lives(XX,YY,T), timestep(T).
 
 overpopulation(X,Y,T) :- cell(X,Y), timestep(T), 4 <= #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T)}.
