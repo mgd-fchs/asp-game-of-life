@@ -5,7 +5,7 @@
 
 % Define the grid size
 #const n = 5.
-size(n).
+#const t = 1.
 
 % Define the alive cells
 % Center cell and cells to its right and left are alive
@@ -13,38 +13,9 @@ lives(3,2,0).
 lives(3,3,0).
 lives(3,4,0).
 
-not lives(1,1,0).
-not lives(1,2,0).
-not lives(1,3,0).
-not lives(1,4,0).
-not lives(1,5,0).
+% Axioms to define the alive/dead cells at timestep t=1:
+alive(X,Y) :- cell(X, Y), lives(X,Y,t).
+dead(X,Y) :- cell(X,Y), not lives(X,Y,t).
 
-not lives(2,1,0).
-not lives(2,2,0).
-not lives(2,3,0).
-not lives(2,4,0).
-not lives(2,5,0).
-
-not lives(4,1,0).
-not lives(4,2,0).
-not lives(4,3,0).
-not lives(4,4,0).
-not lives(4,5,0).
-
-not lives(5,1,0).
-not lives(5,2,0).
-not lives(5,3,0).
-not lives(5,4,0).
-not lives(5,5,0).
-
-not lives(3,1,0).
-not lives(3,5,0).
-
-#show lives/3.
-%#show active/5.
-%#show border_cell/2.
-
-%#show overpopulation/3.
-%#show loneliness/3.
-%#show birth/3.
-%#show preservation/3.
+#show alive/2.
+#show dead/2.

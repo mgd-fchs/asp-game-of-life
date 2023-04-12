@@ -1,7 +1,6 @@
 % Timestep is incremented between 0 and 5
-timestep(0..3).
-timestep(0).
-timestep(T+1) :- timestep(T), T < 3.
+timestep(0..t).
+timestep(T+1) :- timestep(T), T < t.
 
 % Define valid cells and coordinates on the grid
 value(0).
