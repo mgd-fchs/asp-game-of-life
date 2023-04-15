@@ -1,4 +1,4 @@
-% Timestep is incremented between 0 and 5
+% Timestep is incremented between 0 and t
 timestep(0..t).
 timestep(T+1) :- timestep(T), T < t.
 
