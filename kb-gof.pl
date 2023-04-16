@@ -3,18 +3,20 @@ timestep(0..t).
 timestep(T+1) :- timestep(T), T < t.
 
 % Define valid cells and coordinates on the grid
-coordinate(0).
-coordinate(V+1) :- coordinate(V), V <= n.
+row(1..n).
+col(1..n).
 grid_step(-1).
 grid_step(1).
+
+% Define a board
 
 diff(X,0) :- grid_step(X).
 diff(0,Y) :- grid_step(Y).
 diff(X,Y) :- grid_step(X), grid_step(Y).
 
 % Neighboring cells differ in x or y coordinates by a maximum of abs(1)
-cell(X,Y) :- coordinate(X), coordinate(Y), 0 < X, 0 < Y, X <= n, Y <= n.
-near(X,Y,X+DX,Y+DY) :- coordinate(X), coordinate(Y), diff(DX,DY), cell(X+DX,Y+DY).
+cell(X,Y) :- row(X), row(Y).
+near(X,Y,X+DX,Y+DY) :- row(X), row(Y), diff(DX,DY), cell(X+DX,Y+DY).
 
 % Edge cells always stay dead
 border_cell(X,Y) :- cell(X, Y), X == 1. 
