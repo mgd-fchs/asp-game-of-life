@@ -6,13 +6,11 @@
 
 % Define the alive cells
 % Center cell and cells to its right and left are alive
-lives(3,2,0).
-lives(3,3,0).
-lives(3,4,0).
+cell(3,2,0,1).
+cell(3,3,0,1).
+cell(3,4,0,1).
 
 % Axioms to define the alive/dead cells at timestep t=1:
-alive(X,Y) :- cell(X, Y), lives(X,Y,t).
-dead(X,Y) :- cell(X,Y), not lives(X,Y,t).
 
-#show alive/2.
-#show dead/2.
+alive(X,Y,A) :- cell(X,Y,T,A), T==t, A==1.
+#show alive/3.
