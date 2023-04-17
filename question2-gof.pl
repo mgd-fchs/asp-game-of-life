@@ -8,6 +8,7 @@
 alive(X,Y) :- cell(X,Y), lives(X,Y,T), timestep(T).
 dead(X,Y) :- cell(X,Y), not lives(X,Y,T), timestep(T).
 
+% Exclude cells which do not stay the same
 :- cell(X,Y), lives(X,Y,T), not lives(X,Y,T+1), timestep(T).
 :- cell(X,Y), not lives(X,Y,T), lives(X,Y,T+1), timestep(T).
 

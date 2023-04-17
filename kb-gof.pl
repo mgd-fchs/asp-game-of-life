@@ -9,30 +9,29 @@ grid_step(-1).
 grid_step(1).
 
 % Define a board
-
 diff(X,0) :- grid_step(X).
 diff(0,Y) :- grid_step(Y).
 diff(X,Y) :- grid_step(X), grid_step(Y).
 
 % Neighboring cells differ in x or y coordinates by a maximum of abs(1)
-cell(X,Y) :- row(X), row(Y).
-near(X,Y,X+DX,Y+DY) :- row(X), row(Y), diff(DX,DY), cell(X+DX,Y+DY).
+cell(X,Y) :- row(X), col(Y).
+near(X,Y,X+DX,Y+DY) :- row(X), col(Y), diff(DX,DY), cell(X+DX,Y+DY).
 
 % Edge cells always stay dead
-border_cell(X,Y) :- cell(X, Y), X == 1. 
-border_cell(X,Y) :- cell(X, Y), Y == 1. 
-border_cell(X,Y) :- cell(X, Y), X == n. 
-border_cell(X,Y) :- cell(X, Y), Y == n. 
+border_cell(X,Y) :- cell(X,Y), X == 1. 
+border_cell(X,Y) :- cell(X,Y), Y == 1. 
+border_cell(X,Y) :- cell(X,Y), X == n. 
+border_cell(X,Y) :- cell(X,Y), Y == n. 
 
 { lives(X,Y,T) } :- cell(X,Y), timestep(T).
 
-active(X,Y,XX,YY,T) :- near(X,Y,XX,YY), lives(XX,YY,T), timestep(T).
+active(X,Y,X2,Y2,T) :- near(X,Y,X2,Y2), lives(X2,Y2,T), timestep(T).
 
-overpopulation(X,Y,T) :- cell(X,Y), timestep(T), 4 <= #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T)}.
-birth(X,Y,T) :- cell(X, Y), timestep(T), 3 == #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T) }.
-loneliness(X,Y,T) :- cell(X,Y), timestep(T), 2 > #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T) }.
-preservation(X,Y,T) :- cell(X, Y), timestep(T), 2 == #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T) }.
-preservation(X,Y,T) :- cell(X, Y), timestep(T), 3 == #count{ XX,YY : active(X,Y,XX,YY,T), timestep(T) }.
+overpopulation(X,Y,T) :- cell(X,Y), timestep(T), 4 <= #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T)}.
+birth(X,Y,T) :- cell(X,Y), timestep(T), 3 == #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
+loneliness(X,Y,T) :- cell(X,Y), timestep(T), 2 > #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
+preservation(X,Y,T) :- cell(X,Y), timestep(T), 2 == #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
+preservation(X,Y,T) :- cell(X,Y), timestep(T), 3 == #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
 
 not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), overpopulation(X,Y,T), timestep(T).
 not lives(X,Y,T+1) :- border_cell(X,Y), timestep(T+1).
