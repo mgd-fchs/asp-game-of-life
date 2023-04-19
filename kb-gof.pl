@@ -39,3 +39,12 @@ not lives(X,Y,T) :- border_cell(X,Y), timestep(T).
 not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), loneliness(X,Y,T), timestep(T).
 lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), preservation(X,Y,T), timestep(T).
 lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), birth(X,Y,T), timestep(T).
+
+not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), overpopulation(X,Y,T), timestep(T).
+not lives(X,Y,T+1) :- border_cell(X,Y), timestep(T+1).
+not lives(X,Y,T) :- border_cell(X,Y), timestep(T).
+not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), loneliness(X,Y,T), timestep(T).
+not lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), not birth(X,Y,T), timestep(T).
+
+lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), preservation(X,Y,T), timestep(T).
+lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), birth(X,Y,T), timestep(T).
