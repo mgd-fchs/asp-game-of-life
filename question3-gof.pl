@@ -2,22 +2,18 @@
 
 % Define the grid size and timestep
 #const n = 5.
-#const t = 5.
+#const t = 11.
 
-% Define the alive cells
-% Center cell and cells to its right and left are alive
+% Note: Query only with odd numbers of t. See report.
 
-even(T) :- timestep(T), T \ 2 == 0.
-odd(T) :- timestep(T), T \ 2 != 0.
+even(T) :- timestep(T), T \ 2 == 0, T>=0.
 
-% Axioms to find all cells which are constantly the same throughout the timesteps:
-alive_even(X,Y) :- cell(X,Y), lives(X,Y,T), lives(X,Y,T+2), timestep(T).
-dead_even(X,Y) :- cell(X,Y), not lives(X,Y,T), not lives(X,Y,T+2), timestep(T).
-not dead_even(X,Y) :- cell(X,Y), not lives(X,Y,T), lives(X,Y,T+2), timestep(T).
+alive(X,Y) :- cell(X,Y), lives(X,Y,T), lives(X,Y,T+2), even(T).
+dead(X,Y) :- cell(X,Y), not lives(X,Y,T), not lives(X,Y,T+2), even(T).
 
-%alive_odd(X,Y) :- cell(X,Y), lives(X,Y,T), lives(X,Y,T+2), timestep(T), odd(T).
-%dead_odd(X,Y) :- cell(X,Y), not lives(X,Y,T), not lives(X,Y,T+2), timestep(T), odd(T).
-%not dead_odd(X,Y) :- cell(X,Y), not lives(X,Y,T), lives(X,Y,T+2), timestep(T), odd(T).
+% Exclude cells that do not repeat with period 2
+:- cell(X,Y), lives(X,Y,T), not lives(X,Y,T+2), even(T).
+:- cell(X,Y), not lives(X,Y,T), lives(X,Y,T+2), even(T).
 
-#show alive_even/2.
-#show dead_even/2.
+#show alive/2.
+#show dead/2.

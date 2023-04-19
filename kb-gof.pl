@@ -8,7 +8,7 @@ col(1..n).
 grid_step(-1).
 grid_step(1).
 
-% Define a board
+% Define board steps (for calculation of near cells)
 diff(X,0) :- grid_step(X).
 diff(0,Y) :- grid_step(Y).
 diff(X,Y) :- grid_step(X), grid_step(Y).
@@ -25,26 +25,26 @@ border_cell(X,Y) :- cell(X,Y), Y == n.
 
 { lives(X,Y,T) } :- cell(X,Y), timestep(T).
 
+% Active cells are alive neighbors of the regarded cell
 active(X,Y,X2,Y2,T) :- near(X,Y,X2,Y2), lives(X2,Y2,T), timestep(T).
 
+% Define game rules by counting live neighbors
 overpopulation(X,Y,T) :- cell(X,Y), timestep(T), 4 <= #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T)}.
 birth(X,Y,T) :- cell(X,Y), timestep(T), 3 == #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
 loneliness(X,Y,T) :- cell(X,Y), timestep(T), 2 > #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
 preservation(X,Y,T) :- cell(X,Y), timestep(T), 2 == #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
 preservation(X,Y,T) :- cell(X,Y), timestep(T), 3 == #count{ X2,Y2 : active(X,Y,X2,Y2,T), timestep(T) }.
 
+% Specify survival, death, and birth based on the current timestep
 not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), overpopulation(X,Y,T), timestep(T).
 not lives(X,Y,T+1) :- border_cell(X,Y), timestep(T+1).
-not lives(X,Y,T) :- border_cell(X,Y), timestep(T).
 not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), loneliness(X,Y,T), timestep(T).
-lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), preservation(X,Y,T), timestep(T).
-lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), birth(X,Y,T), timestep(T).
-
 not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), overpopulation(X,Y,T), timestep(T).
-not lives(X,Y,T+1) :- border_cell(X,Y), timestep(T+1).
-not lives(X,Y,T) :- border_cell(X,Y), timestep(T).
-not lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), loneliness(X,Y,T), timestep(T).
 not lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), not birth(X,Y,T), timestep(T).
 
 lives(X,Y,T+1) :- cell(X,Y), lives(X,Y,T), preservation(X,Y,T), timestep(T).
 lives(X,Y,T+1) :- cell(X,Y), not lives(X,Y,T), birth(X,Y,T), timestep(T).
+
+% Edge cells are always dead
+not lives(X,Y,T+1) :- border_cell(X,Y), timestep(T+1).
+not lives(X,Y,T) :- border_cell(X,Y), timestep(T).
