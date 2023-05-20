@@ -8,8 +8,8 @@
 
 even(T) :- timestep(T), T \ 2 == 0, T>=0.
 
-alive(X,Y) :- cell(X,Y), lives(X,Y,T), lives(X,Y,T+2), even(T).
-dead(X,Y) :- cell(X,Y), not lives(X,Y,T), not lives(X,Y,T+2), even(T).
+alive(X,Y) :- cell(X,Y), lives(X,Y,T), even(T).
+dead(X,Y) :- cell(X,Y), not lives(X,Y,T), even(T).
 
 % Exclude cells that do not repeat with period 2
 :- cell(X,Y), lives(X,Y,T), not lives(X,Y,T+2), even(T).
